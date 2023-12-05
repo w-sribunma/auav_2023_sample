@@ -16,7 +16,7 @@ def generate_launch_description():
 
     declare_use_sim_time_argument = DeclareLaunchArgument(
         'use_sim_time',
-        default_value='true',
+        default_value='True',
         description='Use simulation/Gazebo clock')
     
     declare_slam_params_file_cmd = DeclareLaunchArgument(
@@ -42,7 +42,9 @@ def generate_launch_description():
         ('/scan','/lidar'),
         ('/scan','scan'),
         ('/map', 'map'),
-        ('/map_metadata','map_metadata')
+        ('/map_metadata','map_metadata'),
+        ('/odom','odom'),
+        ('/odom','/px4_1/fmu/out/vehicle_odometry')
     ]
 
     start_async_slam_toolbox_node = Node(
@@ -56,22 +58,13 @@ def generate_launch_description():
         output='screen',
         remappings=remappings
         )
-
-    # laser = Node(
-    #     package='ldlidar_stl_ros2',
-    #     executable='ldlidar_stl_ros2_node',
-    #     output='screen',
-    #     parameters=[
-    #         {'product_name': 'LDLiDAR_STL27L'},
-    #         {'topic_name': 'scan'},
-    #         {'frame_id': 'base_link'},
-    #         {'port_name': '/dev/ttyUSB0'},
-    #         {'port_baudrate': 921600},
-    #         {'laser_scan_dir': False},
-    #         {'enable_angle_crop_func': False},
-    #         {'angle_crop_min': 0.0},
-    #         {'angle_crop_max': 0.0}],
-    # )
+    
+    nav2_wfd_node = Node(
+        package='nav2_wfd',
+        name='nav2_wavefront_frontier_exploration',
+        executable='explore',
+        remappings=remappings
+    )
 
     tf_odom_base_link =  Node(
         package='tf2_ros',
@@ -94,15 +87,28 @@ def generate_launch_description():
         arguments=["--frame-id", "base_link", "--child-frame-id", "x500_lidar_1/base_link/lidar_sensor"]
     )
 
+
+# Transforms for Nav2 Requires the following
+
+# map --> odom provided from slam_toolbox
+    # tf_map_odom =  Node(
+    #     package='tf2_ros',
+    #     output='screen',
+    #     executable='static_transform_publisher',
+    #     arguments=["--frame-id", "map", "--child-frame-id", "odom"]
+    # )
+
     ld = LaunchDescription()
 
     ld.add_action(declare_use_sim_time_argument)
     ld.add_action(declare_slam_params_file_cmd)
     ld.add_action(declare_namespace)
     ld.add_action(start_async_slam_toolbox_node)
+    ld.add_action(nav2_wfd_node)
     # ld.add_action(laser)
     ld.add_action(tf_odom_base_link)
     ld.add_action(tf_base_footprint_base_link)
     ld.add_action(tf_gz_base_link)
+    # ld.add_action(tf_map_odom)
 
     return ld
