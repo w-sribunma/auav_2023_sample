@@ -87,28 +87,15 @@ def generate_launch_description():
         arguments=["--frame-id", "base_link", "--child-frame-id", "x500_lidar_1/base_link/lidar_sensor"]
     )
 
-
-# Transforms for Nav2 Requires the following
-
-# map --> odom provided from slam_toolbox
-    # tf_map_odom =  Node(
-    #     package='tf2_ros',
-    #     output='screen',
-    #     executable='static_transform_publisher',
-    #     arguments=["--frame-id", "map", "--child-frame-id", "odom"]
-    # )
-
     ld = LaunchDescription()
 
     ld.add_action(declare_use_sim_time_argument)
     ld.add_action(declare_slam_params_file_cmd)
     ld.add_action(declare_namespace)
-    ld.add_action(start_async_slam_toolbox_node)
+    # ld.add_action(start_async_slam_toolbox_node)
     ld.add_action(nav2_wfd_node)
-    # ld.add_action(laser)
     ld.add_action(tf_odom_base_link)
     ld.add_action(tf_base_footprint_base_link)
     ld.add_action(tf_gz_base_link)
-    # ld.add_action(tf_map_odom)
 
     return ld

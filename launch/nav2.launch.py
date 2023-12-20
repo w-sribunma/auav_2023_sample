@@ -17,7 +17,6 @@ ARGUMENTS = [
                           description='log level'),
 ]
 
-
 def generate_launch_description():
     pkg_auav_nav2 = get_package_share_directory('auav_2023_sample')
     pkg_nav2_bringup = get_package_share_directory('nav2_bringup')
@@ -44,7 +43,7 @@ def generate_launch_description():
                 PathJoinSubstitution(
                     [pkg_nav2_bringup, 'launch', 'navigation_launch.py'])),
             launch_arguments={'use_sim_time': use_sim_time,
-                              'use_robot_state_pub': 'False',
+                              'use_robot_state_pub': 'True',
                               'use_composition': 'False',
                               'log_level': LaunchConfiguration('log_level'),
                               'params_file': LaunchConfiguration('params_file')}.items()),
