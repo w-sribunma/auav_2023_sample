@@ -138,9 +138,9 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan
+        observation_sources: lidar #scan
         scan:
-          topic: scan
+          topic: /lidar # scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -169,9 +169,9 @@ global_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan
+        observation_sources: lidar #scan
         scan:
-          topic: scan
+          topic: /lidar  # Default value is "scan"
           max_obstacle_height: 2.0
           clearing: True
           marking: True

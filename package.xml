@@ -4,7 +4,7 @@
   <name>auav_2023_sample</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="worawissribunma@gmail.com">wsribunm</maintainer>
+  <maintainer email="worawissribunma@gmail.com">w-sribunma</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
